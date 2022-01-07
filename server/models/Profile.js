@@ -1,14 +1,16 @@
 const mongoose = require("mongoose");
+const moment = require("moment");
 
 const profileSchema = new mongoose.Schema({
-  user_id: {
+  userId: {
     type: mongoose.Schema.Types.ObjectId,
+    ref: "user",
     required: true,
   },
-  firstname: {
+  firstName: {
     type: String,
   },
-  lastname: {
+  lastName: {
     type: String,
   },
   description: {
@@ -17,13 +19,15 @@ const profileSchema = new mongoose.Schema({
   gender: {
     type: String,
   },
-  birthdate: {
+  birthDate: {
     type: Date,
+    min: moment(Date.now()).subtract(100, "years"),
+    max: moment(Date.now()).subtract(19, "years"),
   },
-  phone_number: {
+  phoneNumber: {
     type: String,
   },
-  photo_url: {
+  photoUrl: {
     type: String,
   },
   location: {
@@ -44,18 +48,44 @@ const profileSchema = new mongoose.Schema({
   },
   availability: [
     {
-      start_at: {
+      startAt: {
         type: Date,
         required: true,
         index: true,
       },
-      end_at: {
+      endAt: {
         type: Date,
         required: true,
       },
     },
   ],
-  hourlyWage: {
+  hourlyRate: {
     type: Number,
   },
 });
+
+const phoneNumberValidator = function (value) {
+  return /\d{3}-\d{3}-\d{4}/.test(value);
+};
+
+const photoUrlValidator = function (value) {
+  return /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/.test(
+    value
+  );
+};
+
+const availabilityEndAtValidator = function (value) {
+  return value > this.startAt;
+};
+
+profileSchema
+  .path("phoneNumber")
+  .validate(phoneNumberValidator, "`{VALUE}` is not valid phone number");
+profileSchema
+  .path("photoUrl")
+  .validate(photoUrlValidator, "`{VALUE}` is not valid photo url");
+profileSchema
+  .path("availability.endAt")
+  .validate(availabilityEndAtValidator, "End date should be after start date");
+
+module.exports = Profile = mongoose.model("profile", profileSchema);
