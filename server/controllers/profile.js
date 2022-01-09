@@ -128,3 +128,15 @@ exports.getProfile = asyncHandler(async (req, res, next) => {
     throw new Error("profileId query parameter is required!!");
   }
 });
+
+// @route GET /get-all
+// @desc get all profiles
+// @access Private
+exports.getAllProfiles = asyncHandler(async (req, res, next) => {
+  let allProfiles = await Profile.find({});
+  if (!allProfiles) {
+    res.status(404);
+    throw new Error("No profile found!!!");
+  }
+  res.status(200).json({ allProfiles });
+});
