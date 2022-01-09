@@ -51,3 +51,54 @@ exports.createProfile = asyncHandler(async (req, res, next) => {
     res.status(201).json(newProfile);
   }
 });
+
+// @route PUT /update
+// @desc update profile
+// @access Private
+exports.updateProfile = asyncHandler(async (req, res, next) => {
+  const profileId = req.body.profileId;
+  const {
+    firstName,
+    lastName,
+    description,
+    gender,
+    birthDate,
+    phoneNumber,
+    photoUrl,
+    city,
+    province,
+    country,
+    hourlyRate,
+  } = req.body;
+
+  const update = {
+    firstName,
+    lastName,
+    description,
+    gender,
+    birthDate,
+    phoneNumber,
+    photoUrl,
+    city,
+    province,
+    country,
+    hourlyRate,
+  };
+
+  let updateProfile = await Profile.findByIdAndUpdate(
+    profileId,
+    { $set: update },
+    {
+      new: true,
+    }
+  );
+
+  const error = updateProfile.validateSync();
+
+  if (error) {
+    res.status(400);
+    throw new Error(error);
+  } else {
+    res.status(201).json(updateProfile);
+  }
+});
