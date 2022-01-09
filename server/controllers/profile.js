@@ -1,5 +1,6 @@
 const Profile = require("../models/Profile");
 const asyncHandler = require("express-async-handler");
+const mongoose = require("mongoose");
 
 // @route POST /create
 // @desc create new profile
@@ -100,5 +101,30 @@ exports.updateProfile = asyncHandler(async (req, res, next) => {
     throw new Error(error);
   } else {
     res.status(201).json(updateProfile);
+  }
+});
+
+// @route GET /get
+// @desc get profile by id
+// @access Private
+exports.getProfile = asyncHandler(async (req, res, next) => {
+  const profileId = req.query.profileId;
+
+  let profile;
+  if (profileId) {
+    try {
+      profile = await Profile.findById(profileId);
+      res.status(200).json({ profile });
+    } catch (error) {
+      res.status(404);
+      if (error instanceof mongoose.Error.CastError) {
+        throw new Error(`No profile found by id: ${profileId}`);
+      } else {
+        throw new Error(error);
+      }
+    }
+  } else {
+    res.status(404);
+    throw new Error("profileId query parameter is required!!");
   }
 });
