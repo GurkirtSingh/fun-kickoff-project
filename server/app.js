@@ -9,6 +9,8 @@ const { join } = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 
+require("dotenv").config();
+
 const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
 
@@ -17,6 +19,10 @@ const { json, urlencoded } = express;
 connectDB();
 const app = express();
 const server = http.createServer(app);
+
+server.listen(process.env.PORT, () => {
+  console.log("server is listening...".blue);
+});
 
 const io = socketio(server, {
   cors: {
