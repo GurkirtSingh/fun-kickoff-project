@@ -2,6 +2,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import FormHelperText from '@mui/material/FormHelperText';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Formik, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
@@ -51,11 +52,12 @@ const SignUpForm = ({ handleSubmit }: Props): JSX.Element => {
     >
       {({ handleSubmit, handleChange, values, touched, errors, isSubmitting }) => (
         <form onSubmit={handleSubmit} className={classes.form} noValidate>
+          <FormHelperText component={Typography}>USERNAME</FormHelperText>
           <TextField
             id="username"
-            label={<Typography className={classes.label}>Username</Typography>}
+            placeholder="Your username"
             fullWidth
-            margin="normal"
+            margin="none"
             InputLabelProps={{
               shrink: true,
             }}
@@ -70,11 +72,12 @@ const SignUpForm = ({ handleSubmit }: Props): JSX.Element => {
             value={values.username}
             onChange={handleChange}
           />
+          <FormHelperText component={Typography}>EMAIL ADDRESS</FormHelperText>
           <TextField
             id="email"
-            label={<Typography className={classes.label}>E-mail address</Typography>}
+            placeholder="Your email"
             fullWidth
-            margin="normal"
+            margin="none"
             InputLabelProps={{
               shrink: true,
             }}
@@ -88,11 +91,12 @@ const SignUpForm = ({ handleSubmit }: Props): JSX.Element => {
             value={values.email}
             onChange={handleChange}
           />
+          <FormHelperText component={Typography}>PASSWORD</FormHelperText>
           <TextField
             id="password"
-            label={<Typography className={classes.label}>Password</Typography>}
+            placeholder="Create a password"
             fullWidth
-            margin="normal"
+            margin="none"
             InputLabelProps={{
               shrink: true,
             }}
@@ -109,7 +113,7 @@ const SignUpForm = ({ handleSubmit }: Props): JSX.Element => {
 
           <Box textAlign="center" marginTop={5}>
             <Button type="submit" size="large" variant="contained" color="primary" className={classes.submit}>
-              {isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'Create'}
+              {isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'SIGN UP'}
             </Button>
           </Box>
         </form>
