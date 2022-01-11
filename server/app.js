@@ -1,3 +1,4 @@
+require("dotenv").config();
 const colors = require("colors");
 const path = require("path");
 const http = require("http");
@@ -11,12 +12,18 @@ const logger = require("morgan");
 
 const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
+const profileRouter = require("./routes/profile");
 
 const { json, urlencoded } = express;
 
 connectDB();
 const app = express();
 const server = http.createServer(app);
+
+const port = process.env.PORT;
+server.listen(port, function () {
+  console.log(`Server is listening at: ${port}`.blue);
+});
 
 const io = socketio(server, {
   cors: {
@@ -43,6 +50,7 @@ app.use((req, res, next) => {
 
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
+app.use("/profile", profileRouter);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "/client/build")));

@@ -33,6 +33,7 @@ const profileSchema = new mongoose.Schema({
   location: {
     city: {
       type: String,
+      index: true,
       required: true,
     },
     province: {
@@ -43,8 +44,6 @@ const profileSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
-    index: true,
-    required: true,
   },
   availability: [
     {
