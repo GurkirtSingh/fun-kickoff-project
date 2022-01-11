@@ -1,3 +1,4 @@
+require("dotenv").config();
 const colors = require("colors");
 const path = require("path");
 const http = require("http");
@@ -12,8 +13,6 @@ const logger = require("morgan");
 const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
 const profileRouter = require("./routes/profile");
-
-require("dotenv").config();
 
 const { json, urlencoded } = express;
 
